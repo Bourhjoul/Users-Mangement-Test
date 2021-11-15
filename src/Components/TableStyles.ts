@@ -16,7 +16,6 @@ export const Table = styled.table`
     border-bottom: 1px solid #dddddd;
   }
 `
-
 export const Tag = styled.div<{ color: string }>`
   background-color: ${(props) => props.color};
   padding: 5px;

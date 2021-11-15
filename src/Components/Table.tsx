@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react"
 import { user } from "../types"
-import { Row, Col, Empty } from "antd"
+import { Row, Col, Empty, Popconfirm } from "antd"
 import { Table, TableContainer, Tag } from "./TableStyles"
 import { DeleteOutlined } from "@ant-design/icons"
 interface TableProps {
@@ -12,6 +12,7 @@ export const UsersTable: React.FC<TableProps> = ({ users, updateUsers }) => {
   const handleDelete = (id: string) => {
     updateUsers(users.filter((user) => user.id !== id))
   }
+
   return (
     <Row align="middle" justify="center">
       <Col
@@ -61,7 +62,14 @@ export const UsersTable: React.FC<TableProps> = ({ users, updateUsers }) => {
                   <td>{user.userName}</td>
                   <td>{user.registrationNumber}</td>
                   <td style={{ textAlign: "right" }}>
-                    <DeleteOutlined onClick={() => handleDelete(user.id)} />
+                    <Popconfirm
+                      title="Vous etes sure？"
+                      okText="Oui"
+                      cancelText="Non"
+                      onConfirm={() => handleDelete(user.id)}
+                    >
+                      <DeleteOutlined />
+                    </Popconfirm>
                   </td>
                 </tr>
               ))}

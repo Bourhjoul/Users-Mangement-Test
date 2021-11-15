@@ -1,9 +1,11 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import "./App.css"
 import "antd/dist/antd.css"
 import { UsersTable } from "./Components/Table"
 import Theme from "./styles/Theme"
-import { Button } from "antd"
+import { Modal } from "./Components/Modal-Ajout/Modal"
+import { user } from "./types"
+import { Button } from "./Components/Modal-Ajout/ModalStyles"
 const initialUsers = [
   {
     id: "123456789",
@@ -35,19 +37,34 @@ const initialUsers = [
 ]
 
 function App() {
-  const [users, updateUsers] = useState(initialUsers)
-  const [showModel, setShowModel] = useState(false)
+  const [users, updateUsers] = useState<user[]>(
+    //@ts-ignore
+    localStorage.getItem("users")
+      ? //@ts-ignore
+        JSON.parse(localStorage.getItem("users"))
+      : initialUsers
+  )
+  const [showModal, setShowModal] = useState(false)
 
+  useEffect(() => {
+    if (users) localStorage.setItem("users", JSON.stringify(users))
+  }, [users])
   return (
     <Theme>
+      <Modal
+        showModal={showModal}
+        updateUsers={updateUsers}
+        setShowModal={setShowModal}
+      />
+
       <UsersTable users={users} updateUsers={updateUsers} />
       <div style={{ textAlign: "right", width: "90%" }}>
         <Button
           onClick={() => {
-            setShowModel(true)
+            setShowModal(true)
           }}
         >
-          Ajouter L'utilisateur
+          Ajouter utilisateur
         </Button>
       </div>
     </Theme>
